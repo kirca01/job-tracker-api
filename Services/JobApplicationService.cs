@@ -79,6 +79,28 @@ public class JobApplicationService : IJobApplicationService
         return true;
     }
 
+    public async Task<StatsDto> GetStats(int userId)
+    {
+        var apps = await _context.Applications.Where(a => a.UserId == userId).ToListAsync();
+
+        var total = apps.Count;
+        var applied = apps.Count(a => a.Status == ApplicationStatus.Applied);
+        var interview = apps.Count(a => a.Status == ApplicationStatus.Interview);
+        var offer = apps.Count(a => a.Status == ApplicationStatus.Offer);
+        var rejected = apps.Count(a => a.Status == ApplicationStatus.Rejected);
+
+        return new StatsDto
+        {
+            Total = total,
+            Applied = applied,
+            Interview = interview,
+            Offer = offer,
+            Rejected = rejected,
+            InterviewRate = total == 0 ? 0 : Math.Round((double)interview / total * 100, 1),
+            OfferRate = total == 0 ? 0 : Math.Round((double)offer / total * 100, 1)
+        };
+    }
+
     private static JobApplicationResponseDto ToDto(JobApplication app) => new()
     {
         Id = app.Id,

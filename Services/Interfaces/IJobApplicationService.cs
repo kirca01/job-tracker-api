@@ -9,4 +9,5 @@ public interface IJobApplicationService
     Task<JobApplicationResponseDto> Create(CreateJobApplicationDto dto, int userId);
     Task<JobApplicationResponseDto?> Update(int id, UpdateJobApplicationDto dto, int userId);
     Task<bool> Delete(int id, int userId);
+    Task<StatsDto> GetStats(int userId);
 }

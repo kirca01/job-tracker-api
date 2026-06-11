@@ -58,4 +58,11 @@ public class JobApplicationsController : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("stats")]
+    public async Task<IActionResult> GetStats()
+    {
+        var result = await _service.GetStats(GetUserId());
+        return Ok(result);
+    }
+
 }
